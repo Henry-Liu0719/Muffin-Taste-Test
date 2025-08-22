@@ -187,14 +187,12 @@ const blindSpotsElem = document.getElementById('blind-spots');
 const incomeSuggestionsElem = document.getElementById('income-suggestions');
 const restartQuizBtn = document.getElementById('restart-quiz-btn');
 const saveToSheetBtn = document.getElementById('save-to-sheet-btn');
-const sendEmailBtn = document.getElementById('send-email-btn');
 
 startQuizBtn.addEventListener('click', startQuiz);
 nextQuestionBtn.addEventListener('click', loadNextQuestion);
 submitQuizBtn.addEventListener('click', showResult);
 restartQuizBtn.addEventListener('click', restartQuiz);
 saveToSheetBtn.addEventListener('click', saveToGoogleSheet);
-sendEmailBtn.addEventListener('click', sendResultToEmail);
 
 function startQuiz() {
     startQuizBtn.style.display = 'none';
@@ -381,163 +379,6 @@ function saveToGoogleSheet() {
     });
 }
 
-// 自動寄送結果到管理員信箱（現在會自動寄送到 hungminliu@gmail.com）
-function sendResultToEmail() {
-    const emailBtn = document.getElementById('send-email-btn');
-    const originalText = emailBtn.textContent;
-    
-    // 禁用按鈕並顯示載入狀態
-    emailBtn.disabled = true;
-    emailBtn.textContent = '📧 正在準備郵件...';
-    
-    // 準備郵件內容
-    const emailSubject = '你的瑪芬口味測驗結果 - ' + resultTypeElem.textContent;
-    const emailBody = `
-你的瑪芬口味測驗結果：
 
-🎯 結果：${resultTypeElem.textContent}
-💬 角色台詞：${roleQuoteElem.textContent}
-
-📋 特質：
-${traitsElem.textContent}
-
-✨ 優勢：
-${advantagesElem.textContent}
-
-⚠️ 盲點提醒：
-${blindSpotsElem.textContent}
-
-💰 創收建議：
-${incomeSuggestionsElem.textContent}
-
-測驗完成時間：${new Date().toLocaleString('zh-TW')}
-
----
-瑪芬口味測驗
-找出你的潛在特質與優勢！
-    `.trim();
-    
-    // 使用 mailto 連結來開啟用戶的郵件客戶端
-    const mailtoLink = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-    
-    // 嘗試開啟郵件客戶端
-    try {
-        window.open(mailtoLink);
-        emailBtn.textContent = '✅ 郵件已準備好';
-        emailBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #6610f2 100%)';
-        
-        // 3秒後恢復原狀
-        setTimeout(() => {
-            emailBtn.disabled = false;
-            emailBtn.textContent = originalText;
-            emailBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #6610f2 100%)';
-        }, 3000);
-    } catch (error) {
-        console.error('開啟郵件客戶端失敗:', error);
-        emailBtn.textContent = '❌ 無法開啟郵件，請手動複製結果';
-        emailBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-        
-        // 顯示複製按鈕
-        showCopyResultButton();
-        
-        // 5秒後恢復原狀
-        setTimeout(() => {
-            emailBtn.disabled = false;
-            emailBtn.textContent = originalText;
-            emailBtn.style.background = 'linear-gradient(135deg, #007bff 0%, #6610f2 100%)';
-        }, 5000);
-    }
-}
-
-// 顯示複製結果按鈕（當郵件客戶端無法開啟時）
-function showCopyResultButton() {
-    const actionButtons = document.querySelector('.action-buttons');
-    
-    // 檢查是否已經有複製按鈕
-    if (!document.getElementById('copy-result-btn')) {
-        const copyBtn = document.createElement('button');
-        copyBtn.id = 'copy-result-btn';
-        copyBtn.className = 'action-btn';
-        copyBtn.style.background = 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)';
-        copyBtn.style.color = 'white';
-        copyBtn.textContent = '📋 複製結果到剪貼簿';
-        copyBtn.addEventListener('click', copyResultToClipboard);
-        
-        actionButtons.appendChild(copyBtn);
-    }
-}
-
-// 複製結果到剪貼簿
-function copyResultToClipboard() {
-    const resultText = `
-你的瑪芬口味測驗結果：
-
-🎯 結果：${resultTypeElem.textContent}
-💬 角色台詞：${roleQuoteElem.textContent}
-
-📋 特質：
-${traitsElem.textContent}
-
-✨ 優勢：
-${advantagesElem.textContent}
-
-⚠️ 盲點提醒：
-${blindSpotsElem.textContent}
-
-💰 創收建議：
-${incomeSuggestionsElem.textContent}
-
-測驗完成時間：${new Date().toLocaleString('zh-TW')}
-    `.trim();
-    
-    if (navigator.clipboard && window.isSecureContext) {
-        // 使用現代 Clipboard API
-        navigator.clipboard.writeText(resultText).then(() => {
-            showCopySuccess();
-        }).catch(() => {
-            fallbackCopyTextToClipboard(resultText);
-        });
-    } else {
-        // 降級方案
-        fallbackCopyTextToClipboard(resultText);
-    }
-}
-
-// 降級複製方案
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showCopySuccess();
-    } catch (err) {
-        console.error('複製失敗:', err);
-        alert('複製失敗，請手動選擇並複製結果文字');
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-// 顯示複製成功訊息
-function showCopySuccess() {
-    const copyBtn = document.getElementById('copy-result-btn');
-    if (copyBtn) {
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = '✅ 已複製到剪貼簿';
-        copyBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        
-        setTimeout(() => {
-            copyBtn.textContent = originalText;
-            copyBtn.style.background = 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)';
-        }, 2000);
-    }
-}
 
 
