@@ -24,6 +24,27 @@
             <button id="submit-quiz-btn" style="display:none;">提交測驗</button>
         </main>
 
+        <section id="user-info-section" style="display:none;">
+            <h2>🎉 恭喜妳完成測驗！</h2>
+            <p>請填寫以下資訊，我們將為妳準備專屬的瑪芬口味分析報告</p>
+            
+            <form id="user-info-form" class="user-info-form">
+                <div class="form-group">
+                    <label for="user-name">姓名：</label>
+                    <input type="text" id="user-name" name="user-name" required placeholder="請輸入您的姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="user-email">信箱：</label>
+                    <input type="email" id="user-email" name="user-email" required placeholder="請輸入您的信箱">
+                </div>
+                
+                <button type="submit" id="submit-info-btn" class="submit-info-btn">
+                    🎯 查看我的瑪芬口味結果
+                </button>
+            </form>
+        </section>
+
         <section id="result-section" style="display:none;">
             <h2>你的瑪芬口味是：</h2>
             <h3 id="result-type"></h3>
@@ -71,12 +92,9 @@
             </div>
             
             <div class="result-actions">
-                <h4>保存測驗結果：</h4>
-                <div class="action-buttons">
-                    <button id="save-to-sheet-btn" class="action-btn sheet-btn">
-                        📊 記錄到 Google 試算表
-                    </button>
-                </div>
+                <h4>🎉 測驗結果已自動保存並寄送</h4>
+                <p>📧 <strong>重要提醒：</strong>我們已將您的測驗結果寄送到您填寫的信箱，請查收郵件！</p>
+                <p>💡 如果沒有收到郵件，請檢查垃圾郵件資料夾。</p>
             </div>
             
             <button id="restart-quiz-btn">重新測驗</button>

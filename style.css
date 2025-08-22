@@ -305,3 +305,107 @@ button:hover {
     }
 }
 
+/* 用戶資訊表單樣式 */
+.user-info-form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-form h2 {
+    text-align: center;
+    color: #495057;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.user-info-form p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-group input::placeholder {
+    color: #adb5bd;
+}
+
+.submit-info-btn {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.submit-info-btn:hover {
+    background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.submit-info-btn:active {
+    transform: translateY(-1px);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .user-info-form {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .user-info-form h2 {
+        font-size: 24px;
+    }
+    
+    .form-group input {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .submit-info-btn {
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+}
+

@@ -172,12 +172,14 @@ let selectedOption = null;
 
 const startQuizBtn = document.getElementById('start-quiz-btn');
 const quizSection = document.getElementById('quiz-section');
+const userInfoSection = document.getElementById('user-info-section');
 const resultSection = document.getElementById('result-section');
 const questionNumberElem = document.getElementById('question-number');
 const questionTextElem = document.getElementById('question-text');
 const optionsContainer = document.getElementById('options-container');
 const nextQuestionBtn = document.getElementById('next-question-btn');
 const submitQuizBtn = document.getElementById('submit-quiz-btn');
+const userInfoForm = document.getElementById('user-info-form');
 const resultTypeElem = document.getElementById('result-type');
 const resultAvatarElem = document.getElementById('result-avatar');
 const roleQuoteElem = document.getElementById('role-quote');
@@ -186,13 +188,12 @@ const advantagesElem = document.getElementById('advantages');
 const blindSpotsElem = document.getElementById('blind-spots');
 const incomeSuggestionsElem = document.getElementById('income-suggestions');
 const restartQuizBtn = document.getElementById('restart-quiz-btn');
-const saveToSheetBtn = document.getElementById('save-to-sheet-btn');
 
 startQuizBtn.addEventListener('click', startQuiz);
 nextQuestionBtn.addEventListener('click', loadNextQuestion);
-submitQuizBtn.addEventListener('click', showResult);
+submitQuizBtn.addEventListener('click', showUserInfoForm);
+userInfoForm.addEventListener('submit', handleUserInfoSubmit);
 restartQuizBtn.addEventListener('click', restartQuiz);
-saveToSheetBtn.addEventListener('click', saveToGoogleSheet);
 
 function startQuiz() {
     startQuizBtn.style.display = 'none';
@@ -255,14 +256,40 @@ function loadNextQuestion() {
     }
 }
 
-function showResult() {
+function showUserInfoForm() {
     if (selectedOption) {
         scores[selectedOption]++; // Add score for the last question
     }
 
     quizSection.style.display = 'none';
-    resultSection.style.display = 'block';
+    userInfoSection.style.display = 'block';
+}
 
+// 處理用戶資訊提交
+function handleUserInfoSubmit(e) {
+    e.preventDefault();
+    
+    const userName = document.getElementById('user-name').value;
+    const userEmail = document.getElementById('user-email').value;
+    
+    if (!userName || !userEmail) {
+        alert('請填寫姓名和信箱');
+        return;
+    }
+    
+    // 計算測驗結果
+    calculateResult();
+    
+    // 自動保存到試算表
+    saveToGoogleSheet(userName, userEmail);
+    
+    // 顯示結果
+    userInfoSection.style.display = 'none';
+    resultSection.style.display = 'block';
+}
+
+// 計算測驗結果
+function calculateResult() {
     let maxScore = 0;
     let resultType = '';
     let dominantTypes = [];
@@ -315,24 +342,23 @@ function showResult() {
 
 function restartQuiz() {
     resultSection.style.display = 'none';
+    userInfoSection.style.display = 'none';
     startQuizBtn.style.display = 'block';
     currentQuestionIndex = 0;
     scores = { 'Dynamo': 0, 'Blaze': 0, 'Tempo': 0, 'Steel': 0 };
     selectedOption = null;
+    
+    // 清空表單
+    document.getElementById('user-info-form').reset();
 }
 
-// 保存結果到 Google 試算表
-function saveToGoogleSheet() {
-    const saveBtn = document.getElementById('save-to-sheet-btn');
-    const originalText = saveBtn.textContent;
-    
-    // 禁用按鈕並顯示載入狀態
-    saveBtn.disabled = true;
-    saveBtn.textContent = '📊 正在保存...';
-    
+// 自動保存結果到 Google 試算表
+function saveToGoogleSheet(userName, userEmail) {
     // 準備測驗結果數據
     const resultData = {
         timestamp: new Date().toLocaleString('zh-TW'),
+        userName: userName,
+        userEmail: userEmail,
         resultType: resultTypeElem.textContent,
         roleQuote: roleQuoteElem.textContent,
         traits: traitsElem.textContent,
@@ -343,7 +369,7 @@ function saveToGoogleSheet() {
     };
     
     // 使用 Google Apps Script Web App 來保存數據
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxHhzQFInEuOJqwFqTwxbreamOcG_mXfu8ox1X6VlTLFIIjaDAvdZ9J1PvR9Wf2wmm6WQ/exec'; // 需要替換為實際的 URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxHhzQFInEuOJqwFqTwxbreamOcG_mXfu8ox1X6VlTLFIIjaDAvdZ9J1PvR9Wf2wmm6WQ/exec';
     
     fetch(scriptURL, {
         method: 'POST',
@@ -354,28 +380,9 @@ function saveToGoogleSheet() {
         body: JSON.stringify(resultData)
     })
     .then(() => {
-        // 成功保存
-        saveBtn.textContent = '✅ 已保存到試算表';
-        saveBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        
-        // 3秒後恢復原狀
-        setTimeout(() => {
-            saveBtn.disabled = false;
-            saveBtn.textContent = originalText;
-            saveBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        }, 3000);
     })
     .catch(error => {
         console.error('保存失敗:', error);
-        saveBtn.textContent = '❌ 保存失敗，請重試';
-        saveBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
-        
-        // 5秒後恢復原狀
-        setTimeout(() => {
-            saveBtn.disabled = false;
-            saveBtn.textContent = originalText;
-            saveBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        }, 5000);
     });
 }
 

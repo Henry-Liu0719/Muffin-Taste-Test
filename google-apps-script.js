@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Google Apps Script 用於處理瑪芬口味測驗結果
  * 將測驗結果保存到 Google 試算表
  */
@@ -29,6 +29,8 @@ function doPost(e) {
     // 準備要保存的數據
     const rowData = [
       data.timestamp || new Date().toLocaleString('zh-TW'),
+      data.userName || '',
+      data.userEmail || '',
       data.resultType || '',
       data.roleQuote || '',
       data.traits || '',
@@ -42,12 +44,12 @@ function doPost(e) {
     // 將數據添加到工作表
     sheet.appendRow(rowData);
     
-    // 自動寄送郵件到指定信箱
+    // 自動寄送測驗結果給客戶
     sendEmailNotification(data);
     
     // 返回成功響應
     return ContentService
-      .createTextOutput(JSON.stringify({ status: 'success', message: '測驗結果已保存並寄送郵件' }))
+      .createTextOutput(JSON.stringify({ status: 'success', message: '測驗結果已保存並寄送客戶郵件' }))
       .setMimeType(ContentService.MimeType.JSON);
       
   } catch (error) {
@@ -72,6 +74,8 @@ function createNewSheet(spreadsheet) {
   // 設定標題行
   const headers = [
     '測驗時間',
+    '用戶姓名',
+    '用戶信箱',
     '結果類型',
     '角色台詞',
     '特質',
@@ -122,7 +126,7 @@ function setupDataValidation(sheet) {
     .setHelpText('請選擇測驗結果類型')
     .build();
     
-  sheet.getRange(2, 2, sheet.getMaxRows() - 1, 1).setDataValidation(rule);
+  sheet.getRange(2, 4, sheet.getMaxRows() - 1, 1).setDataValidation(rule);
 }
 
 /**
@@ -140,6 +144,8 @@ function doGet(e) {
 function testFunction() {
   const testData = {
     timestamp: '2024-01-01 12:00:00',
+    userName: '測試用戶',
+    userEmail: 'test@example.com',
     resultType: '爆漿檸檬瑪芬 - 創造者 Creator',
     roleQuote: '我有100個新點子等你聽！',
     traits: '靈感多、行動快、創意旺盛',
@@ -163,6 +169,11 @@ function testFunction() {
   console.log('測試郵件寄送功能...');
   sendEmailNotification(testData);
   console.log('郵件測試完成');
+  
+  // 測試客戶郵件功能
+  console.log('測試客戶郵件功能...');
+  sendCustomerResult(testData);
+  console.log('客戶郵件測試完成');
 }
 
 /**
@@ -181,7 +192,7 @@ function cleanupOldData() {
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - 30);
   
-  const dataRange = sheet.getRange(2, 9, lastRow - 1, 1); // 系統記錄時間欄位
+  const dataRange = sheet.getRange(2, 11, lastRow - 1, 1); // 系統記錄時間欄位（第11欄）
   const dates = dataRange.getValues();
   
   let rowsToDelete = [];
@@ -204,49 +215,85 @@ function cleanupOldData() {
  */
 function sendEmailNotification(data) {
   try {
-    // 設定收件人信箱
-    const recipientEmail = 'hungminliu@gmail.com';
+    // 寄送測驗結果給客戶
+    sendCustomerResult(data);
+    
+  } catch (error) {
+    console.error('寄送郵件時發生錯誤:', error);
+    // 郵件寄送失敗不會影響測驗結果的保存
+  }
+}
+
+/**
+ * 寄送測驗結果給客戶
+ */
+function sendCustomerResult(data) {
+  try {
+    const customerEmail = data.userEmail;
+    
+    if (!customerEmail) {
+      console.log('客戶信箱為空，跳過寄送');
+      return;
+    }
     
     // 準備郵件主旨
-    const subject = '🎯 新的瑪芬口味測驗結果 - ' + (data.resultType || '未知類型');
+    const subject = '您的瑪芬口味測驗結果 - ' + (data.resultType || '未知類型');
     
     // 準備郵件內容
     const emailBody = `
-🎉 有新的瑪芬口味測驗結果！
+親愛的 ${data.userName || '朋友'}，您好！
 
-📊 測驗完成時間：${data.timestamp || new Date().toLocaleString('zh-TW')}
+恭喜您完成瑪芬口味測驗！
 
-🎯 測驗結果：${data.resultType || '未知類型'}
+以下是您的專屬測驗結果：
 
-💬 角色台詞：${data.roleQuote || '無'}
+您的瑪芬口味：${data.resultType || '未知類型'}
 
-📋 特質描述：
+角色台詞：${data.roleQuote || '無'}
+
+特質描述：
 ${data.traits || '無'}
 
-✨ 優勢分析：
+✨ 您的優勢：
 ${data.advantages || '無'}
 
 ⚠️ 盲點提醒：
 ${data.blindSpots || '無'}
 
-💰 創收建議：
+創收建議：
 ${data.incomeSuggestions || '無'}
 
-📈 詳細分數：
-${JSON.stringify(data.scores || {}, null, 2)}
+測驗完成時間：${data.timestamp || new Date().toLocaleString('zh-TW')}
+
+---
+想要更深入了解如何運用這些特質來創造收入嗎？
+
+我們誠摯邀請您加入我們的免費社群：「在家工作的幸福媽媽」
+在這裡，您將獲得：
+• 20個在家工作點子電子書
+• 每週讀書會共學
+• 一群媽媽夥伴，互相支持、一起前進
+
+點擊加入：https://line.me/ti/g2/e8_awtaDiLwMtVxiq75_DH48mCBT6l8FVuhe7w
+
+想要更快看到成果？
+我設計的線上課程《帶娃媽咪致富寶典》
+會一步步教您，如何用AI打造屬於您的在家工作系統
+讓您一邊顧孩子，也能實現月入十萬的夢想！
+
+課程介紹：https://forms.gle/6zNeb3jniefaVTvY9
 
 ---
 此郵件由瑪芬口味測驗系統自動發送
-測驗結果已同時保存到 Google 試算表
+如有任何問題，請聯繫我們
     `.trim();
     
-    // 寄送郵件
-    GmailApp.sendEmail(recipientEmail, subject, emailBody);
+    // 寄送郵件給客戶
+    GmailApp.sendEmail(customerEmail, subject, emailBody);
     
-    console.log('測驗結果通知郵件已寄送到:', recipientEmail);
+    console.log('測驗結果郵件已寄送到客戶:', customerEmail);
     
   } catch (error) {
-    console.error('寄送郵件時發生錯誤:', error);
-    // 郵件寄送失敗不會影響測驗結果的保存
+    console.error('寄送客戶結果郵件時發生錯誤:', error);
   }
 }
