@@ -337,7 +337,7 @@ function calculateResult() {
     
     // Set avatar image
     resultAvatarElem.src = finalResult.avatar;
-    resultAvatarElem.style.display = 'block';
+    resultAvatarElem.style.display = 'inline';
 }
 
 function restartQuiz() {
