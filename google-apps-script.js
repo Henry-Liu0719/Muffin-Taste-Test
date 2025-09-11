@@ -113,7 +113,7 @@ function setupDataValidation(sheet) {
     '爆漿檸檬瑪芬 - 創造者 Creator',
     '草莓星星瑪芬 - 明星 Star',
     '棉花糖蜂蜜瑪芬 - 支柱 Supporter',
-    '藍莓果醬瑪芬 - 推廣者 Deal Maker',
+    '藍莓果醬瑪芬 - 推廣者 DealMaker',
     '抹茶紅豆瑪芬 - 經理 Trader',
     '黑糖核桃粒瑪芬 - 細節者 Accumulator',
     '迷你黑芝麻瑪芬 - 主計師 Lord',

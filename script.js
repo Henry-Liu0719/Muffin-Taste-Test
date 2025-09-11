@@ -119,14 +119,14 @@ const results = {
         incomeSuggestions: '建社團、培養社群、課程陪跑教練。妳的溫暖特質非常適合建立社群，並透過陪伴與指導來幫助他人成長。',
         avatar: 'photos/Supporter蜂蜜瑪芬.png'
     },
-    'Deal Maker': {
-        type: '藍莓果醬瑪芬 - 推廣者 Deal Maker',
+    'DealMaker': {
+        type: '藍莓果醬瑪芬 - 推廣者 DealMaker',
         quote: '我認識你需要的那個⼈！',
         traits: '懂人心、善協調、有溫度。妳擁有敏銳的洞察力，能夠快速理解他人的需求。妳擅長協調各方資源，促成合作，並且總是能給人溫暖的感受。',
         advantages: '創造合作與成交機會。妳是天生的談判高手，能夠在複雜的關係中找到平衡點，促成雙贏的局面。妳的人脈廣闊，總能為他人牽線搭橋。',
         blindSpots: '過度迎合、沒主見時容易迷失。妳有時會因為過度考慮他人的感受而忽略自己的需求，導致在決策時缺乏主見。需要學習如何堅定立場，表達自己的意見。',
         incomeSuggestions: '推薦產品、社群推廣、聯盟行銷。妳的協調能力非常適合擔任推廣者的角色，透過推薦優質產品或服務來創造收入。',
-        avatar: 'photos/Deal Maker藍莓馬芬.png'
+        avatar: 'photos/DealMaker藍莓瑪芬.png'
     },
     'Trader': {
         type: '抹茶紅豆瑪芬 - 經理 Trader',
@@ -321,7 +321,7 @@ function calculateResult() {
     } else if (dominantTypes.includes('Tempo') && dominantTypes.length === 1) {
         resultType = 'Accumulator';
     } else if (dominantTypes.includes('Blaze') && dominantTypes.includes('Steel')) {
-        resultType = 'Deal Maker';
+        resultType = 'DealMaker';
     } else {
         // Fallback for other combinations
         resultType = dominantTypes[0]; // Use the first dominant type

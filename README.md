@@ -17,7 +17,7 @@
 | **Creator** | 爆漿檸檬瑪芬 | 靈感多、行動快、創意旺盛 |
 | **Star** | 草莓星星瑪芬 | 有感染力、自帶聚光燈、善說故事 |
 | **Supporter** | 棉花糖蜂蜜瑪芬 | 溫暖、團隊感強、激勵人心 |
-| **Deal Maker** | 藍莓果醬瑪芬 | 懂人心、善協調、有溫度 |
+| **DealMaker** | 藍莓果醬瑪芬 | 懂人心、善協調、有溫度 |
 | **Trader** | 抹茶紅豆瑪芬 | 接地氣、重實感、慢慢來 |
 | **Accumulator** | 黑糖核桃粒瑪芬 | 超有紀律、細膩、耐心高 |
 | **Lord** | 迷你黑芝麻瑪芬 | 低調實幹、不喜曝光、控管力強 |
@@ -53,7 +53,7 @@ Muffin-Taste-Test/
 │   ├── Creator檸檬瑪芬.png
 │   ├── Star草莓瑪芬.png
 │   ├── Supporter蜂蜜瑪芬.png
-│   ├── Deal Maker藍莓馬芬.png
+│   ├── DealMaker藍莓瑪芬.png
 │   ├── Trader抹茶紅豆瑪芬.png
 │   ├── Accumulator黑糖核桃瑪芬.png
 │   ├── Lord黑芝麻瑪芬.png
