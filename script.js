@@ -268,21 +268,21 @@ function showUserInfoForm() {
 // 處理用戶資訊提交
 function handleUserInfoSubmit(e) {
     e.preventDefault();
-    
+
     const userName = document.getElementById('user-name').value;
     const userEmail = document.getElementById('user-email').value;
-    
+
     if (!userName || !userEmail) {
         alert('請填寫姓名和信箱');
         return;
     }
-    
+
     // 計算測驗結果
     calculateResult();
-    
+
     // 自動保存到試算表
     saveToGoogleSheet(userName, userEmail);
-    
+
     // 顯示結果
     userInfoSection.style.display = 'none';
     resultSection.style.display = 'block';
@@ -334,7 +334,7 @@ function calculateResult() {
     advantagesElem.textContent = finalResult.advantages;
     blindSpotsElem.textContent = finalResult.blindSpots;
     incomeSuggestionsElem.textContent = finalResult.incomeSuggestions;
-    
+
     // Set avatar image
     resultAvatarElem.src = finalResult.avatar;
     resultAvatarElem.style.display = 'inline';
@@ -347,7 +347,7 @@ function restartQuiz() {
     currentQuestionIndex = 0;
     scores = { 'Dynamo': 0, 'Blaze': 0, 'Tempo': 0, 'Steel': 0 };
     selectedOption = null;
-    
+
     // 清空表單
     document.getElementById('user-info-form').reset();
 }
@@ -367,10 +367,11 @@ function saveToGoogleSheet(userName, userEmail) {
         incomeSuggestions: incomeSuggestionsElem.textContent,
         scores: scores
     };
-    
+
     // 使用 Google Apps Script Web App 來保存數據
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxHhzQFInEuOJqwFqTwxbreamOcG_mXfu8ox1X6VlTLFIIjaDAvdZ9J1PvR9Wf2wmm6WQ/exec';
-    
+    const scriptURL =
+        "https://script.google.com/macros/s/AKfycbxC7VheFCDHaa4dLIKzx_-MYo2Gj4n3Nk2VXR2UdxyWbYv7CNgzmtUQQwoLpVAJ5jcT/exec";
+
     fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -379,11 +380,11 @@ function saveToGoogleSheet(userName, userEmail) {
         },
         body: JSON.stringify(resultData)
     })
-    .then(() => {
-    })
-    .catch(error => {
-        console.error('保存失敗:', error);
-    });
+        .then(() => {
+        })
+        .catch(error => {
+            console.error('保存失敗:', error);
+        });
 }
 
 
