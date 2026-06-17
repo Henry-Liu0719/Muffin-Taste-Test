@@ -13,7 +13,6 @@
             <p>透過十個簡單的問題，探索你的潛在特質與優勢，找到專屬於你的瑪芬口味！</p>
             <button id="start-quiz-btn">開始測驗</button>
         </header>
-
         <main id="quiz-section" style="display:none;">
             <h2 id="question-number">問題 1</h2>
             <p id="question-text"></p>
@@ -23,84 +22,60 @@
             <button id="next-question-btn" style="display:none;">下一題</button>
             <button id="submit-quiz-btn" style="display:none;">提交測驗</button>
         </main>
-
         <section id="user-info-section" style="display:none;">
             <h2>🎉 恭喜妳完成測驗！</h2>
             <p>請填寫以下資訊，我們將為妳準備專屬的瑪芬口味分析報告</p>
-            
+
             <form id="user-info-form" class="user-info-form">
                 <div class="form-group">
                     <label for="user-name">姓名：</label>
                     <input type="text" id="user-name" name="user-name" required placeholder="請輸入您的姓名">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="user-email">信箱：</label>
                     <input type="email" id="user-email" name="user-email" required placeholder="請輸入您的信箱">
                 </div>
-                
+
                 <button type="submit" id="submit-info-btn" class="submit-info-btn">
                     🎯 查看我的瑪芬口味結果
                 </button>
             </form>
         </section>
-
         <section id="result-section" style="display:none;">
             <h2>你的瑪芬口味是：</h2>
             <h3 id="result-type"></h3>
             <img id="result-avatar" src="" alt="結果頭貼" style="display:none;">
             <div id="result-description">
-                <h4>角色台詞：</h4>
-                <p id="role-quote"></p>
-                <h4>特質：</h4>
-                <p id="traits"></p>
-                <h4>優勢：</h4>
-                <p id="advantages"></p>
-                <h4>盲點提醒：</h4>
-                <p id="blind-spots"></p>
-                <h4>創收建議：</h4>
-                <p id="income-suggestions"></p>
+                <p class="result-item"><strong class="result-label">角色台詞：</strong> <span id="role-quote"></span></p>
+                <p class="result-item"><strong class="result-label">特質：</strong> <span id="traits"></span></p>
+                <p class="result-item"><strong class="result-label">優勢：</strong> <span id="advantages"></span></p>
+                <p class="result-item"><strong class="result-label">盲點提醒：</strong> <span id="blind-spots"></span></p>
+                <p class="result-item"><strong class="result-label">創收建議：</strong> <span id="income-suggestions"></span></p>
             </div>
-            
+
             <div class="promotion-section">
                 <h3>🎉恭喜妳完成測驗！是不是對自己的在家創收風格更有頭緒了呢？</h3>
-                
+
                 <div class="community-invitation">
-                    <p>如果妳想更有方向地開始打造妳的創收之路<br>
-                    我誠摯邀請妳加入我們的免費社群：「在家工作的幸福媽媽」</p>
-                    
-                    <h4>加入就能免費獲得：</h4>
-                    <ul>
-                        <li>✔ 20個在家工作點子電子書，快速找到妳的起點</li>
-                        <li>✔ 每週讀書會共學，陪妳一起成長</li>
-                        <li>✔ 一群媽媽夥伴，互相支持、一起前進</li>
-                    </ul>
-                    
-                    <a href="https://line.me/ti/g2/e8_awtaDiLwMtVxiq75_DH48mCBT6l8FVuhe7w?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" 
-                       target="_blank" class="join-community-btn">點我加入免費社群</a>
-                </div>
-                
-                <div class="course-promotion">
-                    <h4>想更快看到成果嗎？</h4>
-                    <p>我設計的線上課程《帶娃媽咪致富寶典》<br>
-                    會一步步教妳，如何用AI打造屬於妳的在家工作系統<br>
-                    讓妳一邊顧孩子，也能實現月入十萬的夢想！</p>
-                    
-                    <a href="https://forms.gle/6zNeb3jniefaVTvY9" 
-                       target="_blank" class="course-btn">👉 點我看課程介紹</a>
+                    <p>做完測驗了嗎？<br>
+                    加我的 LINE，回我一句「<strong>我測完了</strong>」<br>
+                    跟我聊聊妳測出什麼，我會依妳的狀況，給妳接下來的方向。</p>
+
+                    <a href="https://lin.ee/QPteACN"
+                       target="_blank" class="join-community-btn">加我的 LINE，回「我測完了」</a>
                 </div>
             </div>
-            
+
             <div class="result-actions">
                 <h4>🎉 測驗結果已自動保存並寄送</h4>
                 <p>📧 <strong>重要提醒：</strong>我們已將您的測驗結果寄送到您填寫的信箱，請查收郵件！</p>
                 <p>💡 如果沒有收到郵件，請檢查垃圾郵件資料夾。</p>
             </div>
-            
+
             <button id="restart-quiz-btn">重新測驗</button>
         </section>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
